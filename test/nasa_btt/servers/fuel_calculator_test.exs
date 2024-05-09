@@ -68,4 +68,25 @@ defmodule NasaBtt.Servers.FuelCalcullatorTest do
       ]) == 51898
     end
   end
+  
+  test "Async GenServer request" do
+    {:ok, pid} = Calcullator.start_link([])
+    
+    Calcullator.request_fuel(28801, [
+      {:launch, "earth"},
+      {:land, "moon"},
+      {:launch, "moon"},
+      {:land, "earth"},
+    ], pid)
+    
+    receive do
+      {:calcualted_weight, weight, fuel_weight} ->
+        assert weight == 28801
+        assert fuel_weight == 51898 - 28801
+    after
+      5000 ->
+        # Timeout: Fail the test if the message is not received within 5 seconds
+        flunk("Timeout: Did not receive async_task_complete message within 5 seconds")
+    end
+  end
 end

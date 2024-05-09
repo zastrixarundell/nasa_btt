@@ -9,8 +9,8 @@ defmodule NasaBtt.Servers.FuelCalcullator do
     GenServer.start_link(__MODULE__, %{})
   end
   
-  def calculate_fuel!(weight, path, pid) do
-    GenServer.cast(pid, {:calculate_fuel, weight, path, self()})
+  def request_fuel(weight, path, pid) do
+    GenServer.cast(pid, {:request_fuel, weight, path, self()})
   end
   
   # Server-side
@@ -19,30 +19,19 @@ defmodule NasaBtt.Servers.FuelCalcullator do
     {:ok, %{}}
   end
   
-  def handle_cast({:set_path, path}, state) do
-    state = state |> Map.put(:path, path)
-      
-    {:noreply, state}
-  end
-  
-  def handle_cast({:set_weight, weight}, state) do
-    state = state |> Map.put(:weight, weight)
-      
-    {:noreply, state}
-  end
-  
-  def handle_cast({:calculate_fuel, weight, path, calling_pid}, state) do
+  def handle_cast({:request_fuel, weight, path, calling_pid}, state) do
     Task.start_link(fn ->
-      
+      fuel_weight = calculate_fuel(weight, path) - weight
+      send(calling_pid, {:calcualted_weight, weight, fuel_weight})
     end)
-    {:noreply}
+    
+    # A cosmic ray hit something so it's taking a bit of time!
+    Process.sleep(50000)
+
+    {:noreply, state}
   end
   
   # Implementation-wise
-  
-  def calcualte_fuel_and_notify(state, calculate_fuel, calling_pid) do
-    
-  end
   
   @doc """
   Calculate the fuel required for a path.
