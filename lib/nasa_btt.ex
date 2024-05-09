@@ -1,8 +1,14 @@
 defmodule NasaBtt do
   
-  #alias NasaBtt.Parser
+  alias NasaBtt.Parser
   
-  def main([_initial_weight, _locations]) do
+  def main([initial_weight, locations]) do
+    with {:ok, _weight} <- Parser.parse_weight(initial_weight),
+         {:ok, _path} <- Parser.parse_locations(locations) do
+         :ok
+    else
+    _ -> :ok
+    end
         
     System.halt()
   end
@@ -15,5 +21,5 @@ defmodule NasaBtt do
         "Please run the command with the following format: " <>
         "./nasa_btt WEIGHT '[{:launch, \"earth\"}, {:land, \"moon\"}, {:launch, \"moon\"}, {:land, \"earth\"}]")
   end
-  
+
 end
