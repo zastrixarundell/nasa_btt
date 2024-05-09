@@ -97,7 +97,7 @@ defmodule NasaBtt.Servers.FuelCalcullatorTest do
     
     Process.sleep(100)
     
-    assert_receive {:calcualted_weight, 28801, fuel_weight}, 5000
+    assert_receive {:calculated_weight, 28801, fuel_weight}, 5000
     
     assert fuel_weight == 51898
   end
