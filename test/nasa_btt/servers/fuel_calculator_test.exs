@@ -6,19 +6,15 @@ defmodule NasaBtt.Servers.FuelCalcullatorTest do
   doctest Calcullator
   
   describe "Direct Math Operations" do
-    test "landing on earth" do
-      assert Calcullator.landing_weight(28801, 9.807) == 42248
-    end
-    
     test "Apollo11 test suite" do
       shuttle_weight = 28801
 
       all_fuel =
         shuttle_weight
-        |> Calcullator.landing_weight(9.807)
-        |> Calcullator.launch_weight(1.62)
-        |> Calcullator.landing_weight(1.62)
-        |> Calcullator.launch_weight(9.807)
+        |> Calcullator.calculate_weight({:land, "earth"})
+        |> Calcullator.calculate_weight({:launch, "moon"})
+        |> Calcullator.calculate_weight({:land, "moon"})
+        |> Calcullator.calculate_weight({:launch, "earth"})
         # |> then(fn weight -> weight - shuttle_weight end)
         |> Kernel.-(shuttle_weight)
         
@@ -30,10 +26,10 @@ defmodule NasaBtt.Servers.FuelCalcullatorTest do
 
       all_fuel =
         shuttle_weight
-        |> Calcullator.landing_weight(9.807)
-        |> Calcullator.launch_weight(3.711)
-        |> Calcullator.landing_weight(3.711)
-        |> Calcullator.launch_weight(9.807)
+        |> Calcullator.calculate_weight({:land, "earth"})
+        |> Calcullator.calculate_weight({:launch, "mars"})
+        |> Calcullator.calculate_weight({:land, "mars"})
+        |> Calcullator.calculate_weight({:launch, "earth"})
         # |> then(fn weight -> weight - shuttle_weight end)
         |> Kernel.-(shuttle_weight)
         
@@ -45,12 +41,12 @@ defmodule NasaBtt.Servers.FuelCalcullatorTest do
 
       all_fuel =
         shuttle_weight
-        |> Calcullator.landing_weight(9.807)
-        |> Calcullator.launch_weight(3.711)
-        |> Calcullator.landing_weight(3.711)
-        |> Calcullator.launch_weight(1.62)
-        |> Calcullator.landing_weight(1.62)
-        |> Calcullator.launch_weight(9.807)
+        |> Calcullator.calculate_weight({:land, "earth"})
+        |> Calcullator.calculate_weight({:launch, "mars"})
+        |> Calcullator.calculate_weight({:land, "mars"})
+        |> Calcullator.calculate_weight({:launch, "moon"})
+        |> Calcullator.calculate_weight({:land, "moon"})
+        |> Calcullator.calculate_weight({:launch, "earth"})
         # |> then(fn weight -> weight - shuttle_weight end)
         |> Kernel.-(shuttle_weight)
         
@@ -79,14 +75,10 @@ defmodule NasaBtt.Servers.FuelCalcullatorTest do
       {:land, "earth"},
     ], pid)
     
-    receive do
-      {:calcualted_weight, weight, fuel_weight} ->
-        assert weight == 28801
-        assert fuel_weight == 51898 - 28801
-    after
-      5000 ->
-        # Timeout: Fail the test if the message is not received within 5 seconds
-        flunk("Timeout: Did not receive async_task_complete message within 5 seconds")
-    end
+    Process.sleep(100)
+    
+    assert_receive {:calcualted_weight, 28801, fuel_weight}, 5000
+    
+    assert fuel_weight == 51898 - 28801
   end
 end

@@ -1,13 +1,9 @@
 defmodule NasaBtt do
   
-  alias NasaBtt.Parser
+  #alias NasaBtt.Parser
   
-  @spec main(any()) :: none()
-  def main([initial_weight, locations]) do
-    with {:ok, weight} <- Parser.parse_weight(initial_weight) do
-      
-    end
-    
+  def main([_initial_weight, _locations]) do
+        
     System.halt()
   end
   
