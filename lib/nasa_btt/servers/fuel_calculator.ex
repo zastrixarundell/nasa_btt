@@ -9,6 +9,11 @@ defmodule NasaBtt.Servers.FuelCalcullator do
     GenServer.start_link(__MODULE__, %{})
   end
   
+  @doc """
+  Send a request to get the fuel information. Eventually a message will be sent to the calling process with
+  the following format: `{:calcualted_weight, weight, fuel_weight}`.
+  """
+  @spec request_fuel(weight :: integer(), path :: [{action :: :land | :launch, celestial_body :: bitstring()}], pid :: pid()) :: :ok
   def request_fuel(weight, path, pid) do
     GenServer.cast(pid, {:request_fuel, weight, path, self()})
   end
