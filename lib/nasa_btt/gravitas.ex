@@ -16,6 +16,7 @@ defmodule NasaBtt.Gravitas do
   end
   
   def find!(_) do
-    0
+    IO.puts(:stderr, "Gravity is unknown!")
+    System.halt(2)
   end
 end

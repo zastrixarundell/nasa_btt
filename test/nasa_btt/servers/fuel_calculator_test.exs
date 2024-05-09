@@ -2,6 +2,8 @@ defmodule NasaBtt.Servers.FuelCalcullatorTest do
   
   alias NasaBtt.Servers.FuelCalcullator, as: Calcullator
   
+  import ExUnit.CaptureIO
+  
   use ExUnit.Case
   doctest Calcullator
   
@@ -100,5 +102,22 @@ defmodule NasaBtt.Servers.FuelCalcullatorTest do
     assert_receive {:calcualted_weight, 28801, fuel_weight}, 5000
     
     assert fuel_weight == 51898 - 28801
+  end
+  
+  test "Proper halt on illegal location" do
+    {status, code} = capture_io(fn ->
+      shuttle_weight = 14606
+
+      shuttle_weight
+      |> Calcullator.calculate_weight({:land, "earth"})
+      |> Calcullator.calculate_weight({:launch, "sun"})
+      |> Calcullator.calculate_weight({:land, "sun"})
+      |> Calcullator.calculate_weight({:launch, "earth"})
+      # |> then(fn weight -> weight - shuttle_weight end)
+      |> Kernel.-(shuttle_weight)
+    end)
+    
+    assert status == :halted
+    assert code == 2
   end
 end
