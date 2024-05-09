@@ -1,21 +1,20 @@
 # NasaBtt
 
-**TODO: Add description**
+An exercise projecti in Elixir
 
-## Installation
+*Congratulations! You have received a contract from NASA for a software application that will help to calculate the fuel required for the flight. This application aims to calculate fuel to launch from one planet of the solar system and land on another planet of the solar system, depending on the flight route.*
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `nasa_btt` to your list of dependencies in `mix.exs`:
 
-```elixir
-def deps do
-  [
-    {:nasa_btt, "~> 0.1.0"}
-  ]
-end
-```
+## Setting up
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/nasa_btt>.
+The easiest way to setup the correct version of Elixir and Erlang is to install [asdf](https://asdf-vm.com/) and then to run `asdf install` to install the correct version of the languages.
 
+In case of an immtable distro, use a container which shares your home folder, like [fedora toolbox](https://github.com/containers/toolbox).
+
+## Running
+
+The easier way to compile and run a few examples is to run `./start.sh` from within the root of the project, as this will compile the erlang project and run a few tests.
+
+## Testing
+
+To run standard tests and doctests, run `mix test`.
