@@ -73,7 +73,7 @@ defmodule NasaBtt.Servers.FuelCalcullator do
   
   # For when landing
   def calculate_weight(weight, {:land, location} = path) do
-    gravity = Gravitas.find!(location)
+    gravity = Gravitas.find(location)
     
     calcualted = (weight * gravity * 0.033 - 42) |> trunc()
     
@@ -82,7 +82,7 @@ defmodule NasaBtt.Servers.FuelCalcullator do
   
   # For when launching
   def calculate_weight(weight, {:launch, location} = path) do
-    gravity = Gravitas.find!(location)
+    gravity = Gravitas.find(location)
     
     calcualted = (weight * gravity * 0.042 - 33) |> trunc()
     
