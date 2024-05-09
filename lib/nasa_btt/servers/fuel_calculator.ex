@@ -26,8 +26,8 @@ defmodule NasaBtt.Servers.FuelCalcullator do
   
   def handle_cast({:request_fuel, weight, path, calling_pid}, state) do
     Task.start_link(fn ->      
-      fuel_weight = calculate_fuel(weight, path) - weight
-      send(calling_pid, {:calcualted_weight, weight, fuel_weight})
+      calculate_fuel(weight, path)
+      |> then(&send(calling_pid, {:calcualted_weight, weight, &1}))
     end)
 
     {:noreply, state}

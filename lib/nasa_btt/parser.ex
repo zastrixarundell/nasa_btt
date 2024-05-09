@@ -76,4 +76,10 @@ defmodule NasaBtt.Parser do
   defp to_path_struct([action, location]) do
     {String.to_atom(action), location}
   end
+  
+  def sanitize_path(path) do
+    path
+    |> Enum.map(fn {action, location} -> "#{action} #{location |> String.capitalize()}" end)
+    |> Enum.join(", ")
+  end
 end

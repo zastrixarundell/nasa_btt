@@ -2,8 +2,6 @@ defmodule NasaBtt.Servers.FuelCalcullatorTest do
   
   alias NasaBtt.Servers.FuelCalcullator, as: Calcullator
   
-  import ExUnit.CaptureIO
-  
   use ExUnit.Case
   doctest Calcullator
   
@@ -101,6 +99,6 @@ defmodule NasaBtt.Servers.FuelCalcullatorTest do
     
     assert_receive {:calcualted_weight, 28801, fuel_weight}, 5000
     
-    assert fuel_weight == 51898 - 28801
+    assert fuel_weight == 51898
   end
 end
