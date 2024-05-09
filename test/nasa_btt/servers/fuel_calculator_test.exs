@@ -63,6 +63,26 @@ defmodule NasaBtt.Servers.FuelCalcullatorTest do
         {:land, "earth"},
       ]) == 51898
     end
+    
+    test "Mission on Mars" do
+      assert Calcullator.calculate_fuel(14606, [
+        {:launch, "earth"},
+        {:land, "mars"},
+        {:launch, "mars"},
+        {:land, "earth"},
+      ]) == 33388
+    end
+    
+    test "passenger ship" do
+      assert Calcullator.calculate_fuel(75432, [
+        {:launch, "earth"},
+        {:land, "moon"},
+        {:launch, "moon"},
+        {:land, "mars"},
+        {:launch, "mars"},
+        {:land, "earth"},
+      ]) == 212161
+    end
   end
   
   test "Async GenServer request" do
