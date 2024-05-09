@@ -49,7 +49,7 @@ defmodule NasaBtt.Parser do
     iex> NasaBtt.Parser.parse_locations("[{:launch, \\"earth\\"}]")
     {:error, :not_a_path}
     
-    iex> NasaBtt.Parser.parse_locations("[{:launch, \\"earth\\"}]")
+    iex> NasaBtt.Parser.parse_locations("[{:launch, \\"earth\\"}, {:launch, \\"earth\\"}]")
     {:error, :not_a_path}
     
     iex> NasaBtt.Parser.parse_locations("[{:launch, \\"earth\\"}, {:none, \\"moon\\"}, {:launch, \\"moon\\"}, {:land, \\"earth\\"}]")
@@ -66,7 +66,8 @@ defmodule NasaBtt.Parser do
       |> Enum.map(&to_path_struct/1)
       
     with 0 <- rem(Enum.count(path), 2),
-         true <- Enum.count(path) > 0 do
+         true <- Enum.count(path) > 0,
+         false <- invalid_state_change?(path) do
       {:ok, path}
     else
       _ -> {:error, :not_a_path}
@@ -77,6 +78,26 @@ defmodule NasaBtt.Parser do
     {String.to_atom(action), location}
   end
   
+  defp invalid_state_change?(locations) do
+    count = Enum.count(locations)
+
+    locations
+    |> Enum.with_index()
+    |> Enum.any?(fn {{state, _location}, index} ->   
+      if index < count - 1 do
+        state == Enum.at(locations, index + 1) |> elem(0)
+      end
+    end);
+  end
+  
+  @doc """
+  Sanitizes the path to be the same as per the documentation.
+  
+  ## Examples
+  
+    iex> NasaBtt.Parser.sanitize_path([{:launch, "earth"}, {:land, "moon"}, {:launch, "moon"}, {:land, "earth"}])
+    "launch Earth, land Moon, launch Moon, land Earth"
+  """
   def sanitize_path(path) do
     path
     |> Enum.map(fn {action, location} -> "#{action} #{location |> String.capitalize()}" end)
