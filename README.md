@@ -1,6 +1,6 @@
 # NasaBtt
 
-An exercise projecti in Elixir
+An exercise project in Elixir
 
 *Congratulations! You have received a contract from NASA for a software application that will help to calculate the fuel required for the flight. This application aims to calculate fuel to launch from one planet of the solar system and land on another planet of the solar system, depending on the flight route.*
 
