@@ -63,7 +63,7 @@ defmodule NasaBtt.Parser do
       |> String.replace(" ", "")
       |> then(&Regex.scan(~r/{:(launch|land),\"(earth|moon|mars)\"/, &1))
       |> Enum.map(&List.delete_at(&1, 0))
-      |> Enum.map(&to_path_struct/1)
+      |> Enum.map(&to_path_tuple/1)
       
     with 0 <- rem(Enum.count(path), 2),
          true <- Enum.count(path) > 0,
@@ -74,7 +74,7 @@ defmodule NasaBtt.Parser do
     end
   end
   
-  defp to_path_struct([action, location]) do
+  defp to_path_tuple([action, location]) do
     {String.to_atom(action), location}
   end
   
