@@ -38,7 +38,11 @@ RUN asdf plugin add zig
 
 RUN asdf install
 
+COPY config config
+
 COPY lib lib
+
+COPY test test
 
 COPY mix.exs .
 
@@ -57,6 +61,8 @@ USER user
 RUN mix deps.get
 
 RUN mix deps.compile
+
+RUN MIX_ENV=test mix test
 
 RUN mix release nasa_btt_cli
 

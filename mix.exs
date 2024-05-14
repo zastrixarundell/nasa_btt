@@ -16,7 +16,7 @@ defmodule NasaBtt.MixProject do
   def application do
     [
       extra_applications: [:logger],
-      mod: {NasaBtt, []}
+      mod: {NasaBtt.Application, []}
     ]
   end
   
@@ -36,7 +36,7 @@ defmodule NasaBtt.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:burrito, "~> 1.0"}
+      {:burrito, github: "burrito-elixir/burrito"}
     ]
   end
 end
