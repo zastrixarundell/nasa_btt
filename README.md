@@ -53,7 +53,7 @@ mix release nasa_btt_cli
 ./burrito_out/nasa_btt_cli_linux
 ```
 
-Although is does give some additional output this way so it's discouraged.
+Although is does give some additional output *and* it *can* accidentally take some older data and not recompile the code properly, so this way so it's discouraged, use an OCI which sets a clean build environment.
 
 ## Testing
 
