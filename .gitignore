@@ -29,3 +29,7 @@ nasa_btt-*.tar
 .elixir_ls
 
 /nasa_btt
+
+./nasa_btt
+
+/burrito_out
