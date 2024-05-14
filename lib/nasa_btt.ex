@@ -36,7 +36,7 @@ defmodule NasaBtt do
       System.halt(1)
     end
 
-    :ok
+    System.halt()
   end
 
 

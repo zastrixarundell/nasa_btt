@@ -28,4 +28,8 @@ nasa_btt-*.tar
 # VScode language server
 .elixir_ls
 
-nasa_btt
+/nasa_btt
+
+./nasa_btt
+
+/burrito_out
