@@ -1,10 +1,13 @@
 defmodule NasaBtt do
+  
+  @behaviour Application
 
   alias NasaBtt.Servers.FuelCalcullator
   alias NasaBtt.Parser
 
-  def main([initial_weight, locations]) do
-    with {:ok, weight} <- Parser.parse_weight(initial_weight),
+  def start(_, _) do
+    with [initial_weight, locations] <- Burrito.Util.Args.get_arguments(),
+         {:ok, weight} <- Parser.parse_weight(initial_weight),
          {:ok, path} <- Parser.parse_locations(locations),
          {:ok, pid} = Supervisor.start_link([FuelCalcullator], strategy: :one_for_one) do
 
@@ -36,18 +39,11 @@ defmodule NasaBtt do
       System.halt(1)
     end
 
-    :ok
+    System.halt(0)
   end
 
-
-  def main(_args) do
-    IO.puts(
-      :stderr,
-      "Either the weight or location is missing! " <>
-        "Please run the command with the following format: " <>
-        "./nasa_btt WEIGHT '[{:launch, \"earth\"}, {:land, \"moon\"}, {:launch, \"moon\"}, {:land, \"earth\"}]")
-
-    System.halt(2)
+  def stop(_) do
+    :ok
   end
 
 end
